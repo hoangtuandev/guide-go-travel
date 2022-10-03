@@ -9,9 +9,6 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const imgAvatar = {
-    uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1664161366/GoTravel/avatar_fb_wmhyh2.jpg',
-};
 const bgImage = {
     uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1664079867/GoTravel/2752387_qbfjas.jpg',
 };
@@ -23,30 +20,60 @@ const iconRight = {
     uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1664162059/GoTravel/arrow_right_chevron_icon_176220_kw36qt.png',
 };
 
-export const UserHome = ({ navigation }) => {
+export const UserHome = (props) => {
+    const { userLogined } = props;
+
+    console.log(userLogined);
     return (
         <ImageBackground
             source={bgImage}
             resizeMode="cover"
             style={styles.image}
         >
-            <View style={styles.container}>
-                <TouchableOpacity style={styles.avatar}>
-                    <Image source={imgAvatar} style={styles.imgAvatar}></Image>
-                </TouchableOpacity>
-                <Text style={styles.nameGuide}>Phạm Hoàng Tuấn</Text>
-                <View style={styles.rating}>
-                    <Image source={iconStar} style={styles.iconStar}></Image>
-                    <Image source={iconStar} style={styles.iconStar}></Image>
-                    <Image source={iconStar} style={styles.iconStar}></Image>
-                    <Image source={iconStar} style={styles.iconStar}></Image>
-                    <Image source={iconStar} style={styles.iconStar}></Image>
+            {userLogined && (
+                <View style={styles.container}>
+                    <TouchableOpacity style={styles.avatar}>
+                        <Image
+                            source={{
+                                uri: userLogined.tkhdv_anhdaidien,
+                            }}
+                            style={styles.imgAvatar}
+                        ></Image>
+                    </TouchableOpacity>
+                    <Text style={styles.nameGuide}>
+                        {userLogined.tkhdv_huongdanvien.hdv_hoten}
+                    </Text>
+                    <View style={styles.rating}>
+                        <Image
+                            source={iconStar}
+                            style={styles.iconStar}
+                        ></Image>
+                        <Image
+                            source={iconStar}
+                            style={styles.iconStar}
+                        ></Image>
+                        <Image
+                            source={iconStar}
+                            style={styles.iconStar}
+                        ></Image>
+                        <Image
+                            source={iconStar}
+                            style={styles.iconStar}
+                        ></Image>
+                        <Image
+                            source={iconStar}
+                            style={styles.iconStar}
+                        ></Image>
+                    </View>
+                    <TouchableOpacity style={styles.buttonProfile}>
+                        <Text style={styles.labelBtn}>HỒ SƠ</Text>
+                        <Image
+                            source={iconRight}
+                            style={styles.iconRight}
+                        ></Image>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.buttonProfile}>
-                    <Text style={styles.labelBtn}>HỒ SƠ</Text>
-                    <Image source={iconRight} style={styles.iconRight}></Image>
-                </TouchableOpacity>
-            </View>
+            )}
         </ImageBackground>
     );
 };

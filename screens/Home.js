@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import { React, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GuideFuture } from '../components/GuideFuture';
@@ -9,9 +9,10 @@ const iconLogout = {
 };
 
 export const Home = ({ navigation }) => {
-    // useEffect(() => {
-    //     getUserLogin();
-    // }, []);
+    const [userLogined, setUserLogined] = useState(null);
+    useEffect(() => {
+        getUserLogin();
+    }, []);
 
     const removeUserLogin = async () => {
         try {
@@ -24,18 +25,19 @@ export const Home = ({ navigation }) => {
         });
     };
 
-    // const getUserLogin = async () => {
-    //     try {
-    //         const userString = await AsyncStorage.getItem('User');
-    //         console.log('USER: ', JSON.parse(userString));
-    //     } catch (error) {
-    //         console.log(error);
-    //         // Alert.alert('Error', '' + error.message, [{ Text: 'OK' }]);
-    //     }
-    // };
+    const getUserLogin = async () => {
+        try {
+            const userString = await AsyncStorage.getItem('User');
+            // console.log('USER: ', JSON.parse(userString));
+            setUserLogined(JSON.parse(userString));
+            return JSON.parse(userString);
+        } catch (error) {
+            // Alert.alert('Error', '' + error.message, [{ Text: 'OK' }]);
+        }
+    };
     return (
         <View style={styles.container}>
-            <UserHome></UserHome>
+            <UserHome userLogined={userLogined}></UserHome>
             <Text style={styles.labelPanel}>Lịch dẫn tour sắp tới</Text>
             <View style={styles.calendarList}>
                 <GuideFuture></GuideFuture>
