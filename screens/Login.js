@@ -16,20 +16,6 @@ import * as api from '../api';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const bgImage = {
-    uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1664079867/GoTravel/2752387_qbfjas.jpg',
-};
-
-const logoLogin = {
-    uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1664080577/GoTravel/Pngtree_female_traveler_character_who_is_6728271_prrqpb.png',
-};
-const userIcon = {
-    uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1664085539/GoTravel/user-login9_tbuabt.png',
-};
-const passIcon = {
-    uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1664086500/GoTravel/images-lock_yslo7s.png',
-};
-
 export const Login = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -62,14 +48,14 @@ export const Login = ({ navigation }) => {
 
     return (
         <ImageBackground
-            source={bgImage}
+            source={require('../images/2752387_qbfjas.jpg')}
             resizeMode="cover"
             style={styles.image}
         >
             <View style={styles.container}>
                 <View style={styles.panel}>
                     <Image
-                        source={logoLogin}
+                        source={require('../images/Pngtree_female_traveler_character_who_is_6728271_prrqpb.png')}
                         resizeMode="stretch"
                         style={styles.logoLogin}
                     ></Image>
@@ -79,7 +65,7 @@ export const Login = ({ navigation }) => {
                     <View style={styles.textField}>
                         <Image
                             style={styles.iconTextField}
-                            source={userIcon}
+                            source={require('../images/user-login9_tbuabt.png')}
                             resizeMode="stretch"
                         ></Image>
                         <TextInput
@@ -93,10 +79,11 @@ export const Login = ({ navigation }) => {
                     <View style={styles.textField}>
                         <Image
                             style={styles.iconTextField}
-                            source={passIcon}
+                            source={require('../images/images-lock_yslo7s.png')}
                             resizeMode="stretch"
                         ></Image>
                         <TextInput
+                            secureTextEntry={true}
                             placeholder="Mật khẩu"
                             style={styles.input}
                             onChangeText={setPassword}

@@ -25,6 +25,10 @@ export const Home = ({ navigation }) => {
         });
     };
 
+    const handleViewProfile = () => {
+        navigation.navigate('Profile');
+    };
+
     const getUserLogin = async () => {
         try {
             const userString = await AsyncStorage.getItem('User');
@@ -37,7 +41,10 @@ export const Home = ({ navigation }) => {
     };
     return (
         <View style={styles.container}>
-            <UserHome userLogined={userLogined}></UserHome>
+            <UserHome
+                userLogined={userLogined}
+                handleViewProfile={handleViewProfile}
+            ></UserHome>
             <Text style={styles.labelPanel}>Lịch dẫn tour sắp tới</Text>
             <View style={styles.calendarList}>
                 <GuideFuture></GuideFuture>

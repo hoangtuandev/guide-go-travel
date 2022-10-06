@@ -21,9 +21,14 @@ const iconRight = {
 };
 
 export const UserHome = (props) => {
-    const { userLogined } = props;
+    const { userLogined, handleViewProfile } = props;
 
     console.log(userLogined);
+
+    const handleClickViewProfile = () => {
+        handleViewProfile();
+    };
+
     return (
         <ImageBackground
             source={bgImage}
@@ -65,7 +70,10 @@ export const UserHome = (props) => {
                             style={styles.iconStar}
                         ></Image>
                     </View>
-                    <TouchableOpacity style={styles.buttonProfile}>
+                    <TouchableOpacity
+                        style={styles.buttonProfile}
+                        onPress={handleClickViewProfile}
+                    >
                         <Text style={styles.labelBtn}>HỒ SƠ</Text>
                         <Image
                             source={iconRight}

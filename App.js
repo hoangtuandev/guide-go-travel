@@ -6,6 +6,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Login } from './screens/Login';
 import { Home } from './screens/Home';
+import { Profile } from './screens/Profile';
+import { Register } from './screens/Register';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +31,7 @@ export default function App() {
     // };
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={'Login'}>
+            <Stack.Navigator initialRouteName={'Register'}>
                 <Stack.Screen
                     name="Login"
                     options={{
@@ -43,6 +45,20 @@ export default function App() {
                         header: () => <View></View>,
                     }}
                     component={Home}
+                />
+                <Stack.Screen
+                    name="Profile"
+                    options={{
+                        header: () => <View></View>,
+                    }}
+                    component={Profile}
+                />
+                <Stack.Screen
+                    name="Register"
+                    options={{
+                        header: () => <View></View>,
+                    }}
+                    component={Register}
                 />
             </Stack.Navigator>
         </NavigationContainer>
