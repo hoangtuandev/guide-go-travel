@@ -5,12 +5,13 @@ import {
     ScrollView,
     View,
     ImageBackground,
-    StatusBar,
+    TouchableOpacity,
+    Image,
 } from 'react-native';
 import * as api from '../api';
 import { CalenderRegister } from '../components/CalenderRegister';
 
-export const Register = () => {
+export const Register = ({ navigation }) => {
     const [calenderList, setCalenderList] = useState([]);
 
     useEffect(() => {
@@ -26,24 +27,35 @@ export const Register = () => {
         });
     }, []);
 
+    const handleBackHome = () => {
+        console.log('dmfgbdkfjbg');
+        navigation.navigate('Home');
+    };
+
     return (
         <ImageBackground
             source={require('../images/2752387_qbfjas.jpg')}
             resizeMode="cover"
             style={styles.image}
         >
-            {/* <StatusBar style={styles.statusBar} /> */}
+            <TouchableOpacity style={styles.backHome} onPress={handleBackHome}>
+                <Image
+                    style={styles.homeButton}
+                    source={require('../images/spacefm_103907.png')}
+                ></Image>
+            </TouchableOpacity>
+            <Text style={styles.labelPanel}>ĐĂNG KÝ DẪN TOUR</Text>
             <ScrollView
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                <Text style={styles.labelPanel}>ĐĂNG KÝ DẪN TOUR</Text>
                 <View style={styles.calenderList}>
                     {calenderList.map((calendar, index) => (
                         <CalenderRegister
                             key={index}
                             calendar={calendar}
+                            setCalenderList={setCalenderList}
                         ></CalenderRegister>
                     ))}
                 </View>
@@ -58,9 +70,20 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        marginTop: 45,
+        marginTop: 10,
+    },
+    backHome: {
+        zIndex: 9,
+        position: 'absolute',
+        top: 45,
+        left: 10,
+    },
+    homeButton: {
+        width: 40,
+        height: 40,
     },
     labelPanel: {
+        marginTop: 45,
         color: '#fff',
         textAlign: 'center',
         fontSize: 25,

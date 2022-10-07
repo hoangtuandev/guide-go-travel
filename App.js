@@ -8,6 +8,7 @@ import { Login } from './screens/Login';
 import { Home } from './screens/Home';
 import { Profile } from './screens/Profile';
 import { Register } from './screens/Register';
+import { DetailCalendar } from './screens/DetailCalendar';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +32,7 @@ export default function App() {
     // };
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={'Register'}>
+            <Stack.Navigator initialRouteName={'Login'}>
                 <Stack.Screen
                     name="Login"
                     options={{
@@ -59,6 +60,13 @@ export default function App() {
                         header: () => <View></View>,
                     }}
                     component={Register}
+                />
+                <Stack.Screen
+                    name="DetailCalendar"
+                    options={{
+                        header: () => <View></View>,
+                    }}
+                    component={DetailCalendar}
                 />
             </Stack.Navigator>
         </NavigationContainer>

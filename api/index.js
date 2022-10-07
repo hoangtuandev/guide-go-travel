@@ -6,3 +6,9 @@ export const handleLoginGuide = (data) =>
     axios.post(`${URL}/GuideAccount/login`, data);
 
 export const getCalendarGuide = () => axios.get(`${URL}/CalendarGuide`);
+
+export const registerCalendarGuideTour = (data) =>
+    axios.post(`${URL}/CalendarGuide/registerCalendarGuideTour`, data);
+
+export const cancelCalendarGuideTour = (data) =>
+    axios.post(`${URL}/CalendarGuide/cancelCalendarGuideTour`, data);

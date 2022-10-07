@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
         paddingTop: 50,
     },
     backHome: {
+        zIndex: 9,
         position: 'absolute',
         top: 45,
         left: 10,

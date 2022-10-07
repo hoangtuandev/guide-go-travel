@@ -55,7 +55,10 @@ export const Home = ({ navigation }) => {
                     <Text style={styles.textView}>Xem tất cả </Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.registerBtn}>
+            <TouchableOpacity
+                style={styles.registerBtn}
+                onPress={() => navigation.navigate('Register')}
+            >
                 <Text style={styles.labelBtn}>ĐĂNG KÝ DẪN TOUR</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.logout} onPress={handleLogout}>
