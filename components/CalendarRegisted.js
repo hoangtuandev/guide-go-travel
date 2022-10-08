@@ -4,30 +4,15 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as api from '../api';
 
-export const CalenderRegister = (props) => {
-    const { calendar, setCalenderList } = props;
+export const CalendarRegisted = (props) => {
+    const { calendar, setCalendarList } = props;
 
     const [userLogined, setUserLogined] = useState(null);
-    const [isRegisted, setIsRegisted] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
     const [isLoadingCancel, setIsLoadingCancel] = useState(false);
 
     useEffect(() => {
         getUserLogin();
     }, []);
-
-    useEffect(() => {
-        if (userLogined) {
-            for (let i = 0; i < calendar.ldt_huongdanvien.length; i++) {
-                if (
-                    calendar.ldt_huongdanvien[i].tkhdv_tendangnhap ===
-                    userLogined.tkhdv_tendangnhap
-                ) {
-                    setIsRegisted(true);
-                }
-            }
-        }
-    }, [userLogined, calendar.ldt_huongdanvien]);
 
     const getUserLogin = async () => {
         try {
@@ -57,38 +42,26 @@ export const CalenderRegister = (props) => {
             ? 'Thứ 6'
             : 'Thứ 7';
 
-    const handleRegisterCalendar = () => {
-        setIsLoading(true);
-        api.registerCalendarGuideTour({
-            idCalendar: calendar._id,
-            guide: userLogined,
-        }).then((res) => {
-            setCalenderList(
-                res.data.sort(
-                    (a, b) =>
-                        Date.parse(a.ldt_lichkhoihanh.lkh_ngaykhoihanh) -
-                        Date.parse(b.ldt_lichkhoihanh.lkh_ngaykhoihanh)
-                )
-            );
-            setIsLoading(false);
-        });
-    };
-
     const handleCancelCalendarGuideTour = () => {
         setIsLoadingCancel(true);
         api.cancelCalendarGuideTour({
             idCalendar: calendar._id,
             guide: userLogined,
         }).then((res) => {
-            setIsRegisted(false);
-            setCalenderList(
-                res.data.sort(
-                    (a, b) =>
-                        Date.parse(a.ldt_lichkhoihanh.lkh_ngaykhoihanh) -
-                        Date.parse(b.ldt_lichkhoihanh.lkh_ngaykhoihanh)
-                )
+            api.getCalendarGuideByAccount({ idAccount: userLogined._id }).then(
+                (res) => {
+                    setCalendarList(
+                        res.data.sort(
+                            (a, b) =>
+                                Date.parse(
+                                    a.ldt_lichkhoihanh.lkh_ngaykhoihanh
+                                ) -
+                                Date.parse(b.ldt_lichkhoihanh.lkh_ngaykhoihanh)
+                        )
+                    );
+                    setIsLoadingCancel(false);
+                }
             );
-            setIsLoadingCancel(false);
         });
     };
 
@@ -111,14 +84,7 @@ export const CalenderRegister = (props) => {
                     {'  Kết thúc '}
                     {moment(dateEnd).format('DD / MM / YYYY')}
                 </Text>
-                <Text style={styles.nameTour}>
-                    <Image
-                        source={require('../images/gui_check_yes_icon_157194.png')}
-                        style={styles.checkIcon}
-                    />
-                    {'  '}
-                    Khởi hành tại {calendar.ldt_lichkhoihanh.lkh_diadiem}
-                </Text>
+
                 <Text style={styles.nameTour}>
                     <Image
                         source={require('../images/gui_check_yes_icon_157194.png')}
@@ -146,20 +112,8 @@ export const CalenderRegister = (props) => {
                     >
                         <Text style={styles.labelButton}>CHI TIẾT</Text>
                     </TouchableOpacity>
-                    {!isRegisted && !isLoading && (
-                        <TouchableOpacity
-                            style={styles.buttonRegister}
-                            onPress={handleRegisterCalendar}
-                        >
-                            <Text style={styles.labelButton}>ĐĂNG KÝ</Text>
-                        </TouchableOpacity>
-                    )}
-                    {isLoading && (
-                        <TouchableOpacity style={styles.buttonRegister}>
-                            <Text style={styles.labelButton}>...</Text>
-                        </TouchableOpacity>
-                    )}
-                    {isRegisted && !isLoadingCancel && (
+
+                    {!isLoadingCancel && (
                         <TouchableOpacity
                             style={styles.buttonCancle}
                             onPress={handleCancelCalendarGuideTour}
@@ -185,9 +139,9 @@ const styles = StyleSheet.create({
     calendarItem: {
         padding: 0,
         marginBottom: 20,
-        borderRadius: 10,
-        borderWidth: 0,
-        borderColor: '#BDC3C7',
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#3498DB',
         backgroundColor: '#fff',
 
         shadowColor: '#000',
@@ -198,7 +152,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.44,
         shadowRadius: 10.32,
 
-        elevation: 7,
+        elevation: 3,
     },
     timeDeparture: {
         paddingTop: 5,
@@ -207,10 +161,10 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        fontSize: 19,
+        fontSize: 18,
         fontWeight: '700',
         color: '#fff',
-        backgroundColor: '#2874A6',
+        backgroundColor: '#3498DB',
     },
     inforCalendar: {
         paddingTop: 5,
@@ -221,13 +175,13 @@ const styles = StyleSheet.create({
         height: 15,
     },
     nameTour: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: '500',
         color: '#333',
         paddingRight: 10,
     },
     finishDate: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: '500',
         color: '#E74C3C',
     },
@@ -235,7 +189,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingBottom: 5,
         paddingRight: 10,
-        marginTop: 15,
+        marginTop: 7,
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -247,8 +201,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     guideAvatar: {
-        width: 40,
-        height: 40,
+        width: 37,
+        height: 37,
         borderRadius: 50,
         marginRight: 5,
     },
@@ -258,32 +212,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonDetail: {
-        width: 85,
-        backgroundColor: '#2874A6',
-        paddingTop: 5,
-        paddingBottom: 5,
-        paddingLeft: 8,
-        paddingRight: 8,
+        width: 80,
+        backgroundColor: '#3498DB',
+        paddingTop: 4,
+        paddingBottom: 4,
         borderRadius: 5,
         marginLeft: 10,
     },
-    buttonRegister: {
-        width: 85,
+
+    buttonCancle: {
+        width: 80,
         backgroundColor: '#E74C3C',
         paddingTop: 4,
         paddingBottom: 4,
-        paddingLeft: 8,
-        paddingRight: 8,
-        borderRadius: 5,
-        marginLeft: 10,
-    },
-    buttonCancle: {
-        width: 85,
-        backgroundColor: '#B3B6B7',
-        paddingTop: 4,
-        paddingBottom: 4,
-        paddingLeft: 8,
-        paddingRight: 8,
         borderRadius: 5,
         marginLeft: 10,
     },
@@ -291,6 +232,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff',
         fontWeight: '700',
-        fontSize: 16,
+        fontSize: 15,
     },
 });

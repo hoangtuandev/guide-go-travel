@@ -1,18 +1,50 @@
 import { React, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GuideFuture } from '../components/GuideFuture';
 import { UserHome } from '../components/UserHome';
+import * as api from '../api';
+import { CalendarRegisted } from '../components/CalendarRegisted';
 
 const iconLogout = {
     uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1664429085/GoTravel/log-out_icon-icons.com_50106_x9axlk.png',
 };
 
-export const Home = ({ navigation }) => {
+export const Home = ({ navigation, route }) => {
+    const { registedCalendarList } = route.params || [];
+
     const [userLogined, setUserLogined] = useState(null);
+    const [calendarList, setCalendarList] = useState([]);
+
     useEffect(() => {
         getUserLogin();
     }, []);
+
+    console.log('hfsdghsdb');
+
+    useEffect(() => {
+        if (userLogined) {
+            api.getCalendarGuideByAccount({ idAccount: userLogined._id }).then(
+                (res) => {
+                    setCalendarList(
+                        res.data.sort(
+                            (a, b) =>
+                                Date.parse(
+                                    a.ldt_lichkhoihanh.lkh_ngaykhoihanh
+                                ) -
+                                Date.parse(b.ldt_lichkhoihanh.lkh_ngaykhoihanh)
+                        )
+                    );
+                }
+            );
+        }
+    }, [userLogined, registedCalendarList]);
 
     const removeUserLogin = async () => {
         try {
@@ -47,13 +79,22 @@ export const Home = ({ navigation }) => {
             ></UserHome>
             <Text style={styles.labelPanel}>Lịch dẫn tour sắp tới</Text>
             <View style={styles.calendarList}>
-                <GuideFuture></GuideFuture>
-                <GuideFuture></GuideFuture>
-                <GuideFuture></GuideFuture>
-                <GuideFuture></GuideFuture>
                 <TouchableOpacity style={styles.viewAll}>
                     <Text style={styles.textView}>Xem tất cả </Text>
                 </TouchableOpacity>
+                <ScrollView
+                    style={styles.list}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {calendarList.map((calendar, index) => (
+                        <CalendarRegisted
+                            key={index}
+                            calendar={calendar}
+                            setCalendarList={setCalendarList}
+                        ></CalendarRegisted>
+                    ))}
+                </ScrollView>
             </View>
             <TouchableOpacity
                 style={styles.registerBtn}
@@ -75,18 +116,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     labelPanel: {
-        marginTop: 15,
-        marginBottom: 10,
+        marginTop: 10,
+        marginBottom: 0,
         textAlign: 'center',
-        fontSize: 21,
-        fontWeight: '600',
+        fontSize: 22,
+        fontWeight: '700',
         color: '#2E86C1',
     },
     calendarList: {
         flex: 2,
     },
+    list: {
+        paddingLeft: 15,
+        paddingRight: 15,
+    },
     viewAll: {
         marginRight: 20,
+        paddingBottom: 5,
     },
     textView: {
         marginTop: 5,
@@ -98,6 +144,7 @@ const styles = StyleSheet.create({
     },
     registerBtn: {
         backgroundColor: '#fff',
+        paddingTop: 10,
     },
     labelBtn: {
         backgroundColor: '#E74C3C',
@@ -111,14 +158,6 @@ const styles = StyleSheet.create({
         paddingTop: 7,
         paddingBottom: 7,
         marginBottom: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-        elevation: 4,
     },
     logout: {
         position: 'absolute',

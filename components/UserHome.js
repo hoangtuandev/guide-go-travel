@@ -88,7 +88,7 @@ export const UserHome = (props) => {
 
 const styles = StyleSheet.create({
     image: {
-        flex: 1.2,
+        flex: 1,
     },
     container: {
         flex: 1,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     rating: {
         flex: 1,
         flexDirection: 'row',
-        marginTop: 10,
+        marginTop: 5,
     },
     iconStar: {
         width: 23,

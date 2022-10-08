@@ -9,14 +9,21 @@ import {
     Image,
 } from 'react-native';
 import * as api from '../api';
-import { CalenderRegister } from '../components/CalenderRegister';
+import { CalendarItem } from '../components/CalendarItem';
 
 export const Register = ({ navigation }) => {
     const [calenderList, setCalenderList] = useState([]);
+    const [userLogined, setUserLogined] = useState(null);
+    const [registedCalendarList, setRegistedCalendarList] = useState([]);
+
+    console.log('fvbdfhbvsdhfsh');
 
     useEffect(() => {
-        api.getCalendarGuide().then((res) => {
-            // console.log(res.data);
+        getUserLogin();
+    }, []);
+
+    useEffect(() => {
+        api.getAvairiableCalendarGuide().then((res) => {
             setCalenderList(
                 res.data.sort(
                     (a, b) =>
@@ -27,9 +34,34 @@ export const Register = ({ navigation }) => {
         });
     }, []);
 
+    useEffect(() => {
+        if (userLogined) {
+            for (let i = 0; i < calendar.ldt_huongdanvien.length; i++) {
+                if (
+                    calendar.ldt_huongdanvien[i].tkhdv_tendangnhap ===
+                    userLogined.tkhdv_tendangnhap
+                ) {
+                    setIsRegisted(true);
+                }
+            }
+        }
+    }, [userLogined]);
+
+    const getUserLogin = async () => {
+        try {
+            const userString = await AsyncStorage.getItem('User');
+            // console.log('USER: ', JSON.parse(userString));
+            setUserLogined(JSON.parse(userString));
+            return JSON.parse(userString);
+        } catch (error) {
+            // Alert.alert('Error', '' + error.message, [{ Text: 'OK' }]);
+        }
+    };
+
     const handleBackHome = () => {
-        console.log('dmfgbdkfjbg');
-        navigation.navigate('Home');
+        navigation.navigate('Home', {
+            registedCalendarList: registedCalendarList,
+        });
     };
 
     return (
@@ -52,11 +84,12 @@ export const Register = ({ navigation }) => {
             >
                 <View style={styles.calenderList}>
                     {calenderList.map((calendar, index) => (
-                        <CalenderRegister
+                        <CalendarItem
                             key={index}
                             calendar={calendar}
                             setCalenderList={setCalenderList}
-                        ></CalenderRegister>
+                            setRegistedCalendarList={setRegistedCalendarList}
+                        ></CalendarItem>
                     ))}
                 </View>
             </ScrollView>

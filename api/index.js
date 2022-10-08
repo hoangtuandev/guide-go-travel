@@ -12,3 +12,9 @@ export const registerCalendarGuideTour = (data) =>
 
 export const cancelCalendarGuideTour = (data) =>
     axios.post(`${URL}/CalendarGuide/cancelCalendarGuideTour`, data);
+
+export const getCalendarGuideByAccount = (data) =>
+    axios.post(`${URL}/CalendarGuide/getCalendarGuideByAccount`, data);
+
+export const getAvairiableCalendarGuide = () =>
+    axios.get(`${URL}/CalendarGuide/getAvairiableCalendarGuide`);
