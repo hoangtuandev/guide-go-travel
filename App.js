@@ -9,6 +9,8 @@ import { Home } from './screens/Home';
 import { Profile } from './screens/Profile';
 import { Register } from './screens/Register';
 import { DetailCalendar } from './screens/DetailCalendar';
+import { HistoryCalendar } from './screens/HistoryCalendar';
+import { HistoryRating } from './screens/HistoyRating';
 
 const Stack = createNativeStackNavigator();
 
@@ -67,6 +69,20 @@ export default function App() {
                         header: () => <View></View>,
                     }}
                     component={DetailCalendar}
+                />
+                <Stack.Screen
+                    name="HistoryCalendar"
+                    options={{
+                        header: () => <View></View>,
+                    }}
+                    component={HistoryCalendar}
+                />
+                <Stack.Screen
+                    name="HistoryRating"
+                    options={{
+                        header: () => <View></View>,
+                    }}
+                    component={HistoryRating}
                 />
             </Stack.Navigator>
         </NavigationContainer>

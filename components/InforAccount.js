@@ -65,11 +65,11 @@ export const InforAccount = ({ navigation }) => {
                             />
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.editButton}>
+                    {/* <TouchableOpacity style={styles.editButton}>
                         <Text style={styles.labelButton}>
                             Thay đổi mật khẩu
                         </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             )}
         </Fragment>
@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         borderLeftColor: '#D91B1B',
         paddingTop: 2,
+        marginTop: 10,
         paddingBottom: 2,
         marginBottom: 10,
         color: '#D91B1B',
@@ -119,6 +120,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     form: {
+        marginBottom: 70,
         marginTop: 0,
         marginLeft: 15,
         marginRight: 15,

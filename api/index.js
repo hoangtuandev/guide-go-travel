@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'http://192.168.1.7:5000';
+const URL = 'http://192.168.1.12:5000';
 
 export const handleLoginGuide = (data) =>
     axios.post(`${URL}/GuideAccount/login`, data);
@@ -18,3 +18,9 @@ export const getCalendarGuideByAccount = (data) =>
 
 export const getAvairiableCalendarGuide = () =>
     axios.get(`${URL}/CalendarGuide/getAvairiableCalendarGuide`);
+
+export const getGuideTimesByAccount = (data) =>
+    axios.post(`${URL}/CalendarGuide/getGuideTimesByAccount`, data);
+
+export const getRatingGuideByGuideAccount = (data) =>
+    axios.post(`${URL}/RatingGuide/getRatingGuideByGuideAccount`, data);

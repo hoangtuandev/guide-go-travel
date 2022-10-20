@@ -1,5 +1,13 @@
 import { React, useState, useEffect, Fragment } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+    StatusBar,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { InforPerson } from '../components/InforPerson';
 import { InforAccount } from '../components/InforAccount';
@@ -10,6 +18,7 @@ const iconStar = {
 
 export const Profile = ({ navigation }) => {
     const [userLogined, setUserLogined] = useState(null);
+
     useEffect(() => {
         getUserLogin();
     }, []);
@@ -29,8 +38,19 @@ export const Profile = ({ navigation }) => {
         navigation.navigate('Home');
     };
 
+    const handleViewHistoryCalendar = () => {
+        navigation.navigate('HistoryCalendar');
+    };
+
+    const handleViewHistoryRating = () => {
+        navigation.navigate('HistoryRating');
+    };
+
     return (
-        <Fragment>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+        >
             {userLogined && (
                 <View style={styles.container}>
                     <TouchableOpacity
@@ -76,15 +96,27 @@ export const Profile = ({ navigation }) => {
                         ></Image>
                     </View>
                     <InforPerson></InforPerson>
-                    <TouchableOpacity style={styles.editButton}>
+                    {/* <TouchableOpacity style={styles.editButton}>
                         <Text style={styles.labelButton}>
                             Chỉnh sửa thông tin hồ sơ
                         </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <InforAccount></InforAccount>
+                    <TouchableOpacity
+                        style={styles.editButton}
+                        onPress={handleViewHistoryCalendar}
+                    >
+                        <Text style={styles.labelButton}>LỊCH SỬ DẪN TOUR</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.editButton}
+                        onPress={handleViewHistoryRating}
+                    >
+                        <Text style={styles.labelButton}>LỊCH SỬ ĐÁNH GIÁ</Text>
+                    </TouchableOpacity>
                 </View>
             )}
-        </Fragment>
+        </ScrollView>
     );
 };
 
@@ -95,6 +127,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 50,
     },
+
     backHome: {
         zIndex: 9,
         position: 'absolute',
@@ -134,7 +167,7 @@ const styles = StyleSheet.create({
     editButton: {
         marginLeft: 15,
         marginRight: 15,
-        marginBottom: 20,
+        marginBottom: 5,
         paddingTop: 7,
         paddingBottom: 9,
         backgroundColor: '#2E86C1',

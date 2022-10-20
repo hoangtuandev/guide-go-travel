@@ -16,8 +16,6 @@ export const Register = ({ navigation }) => {
     const [userLogined, setUserLogined] = useState(null);
     const [registedCalendarList, setRegistedCalendarList] = useState([]);
 
-    console.log('fvbdfhbvsdhfsh');
-
     useEffect(() => {
         getUserLogin();
     }, []);
