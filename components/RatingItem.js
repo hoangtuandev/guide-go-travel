@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 10,
         paddingRight: 10,
+        marginBottom: 20,
     },
     header: {
         flexDirection: 'row',
