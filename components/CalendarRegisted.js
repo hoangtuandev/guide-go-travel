@@ -65,10 +65,6 @@ export const CalendarRegisted = (props) => {
         });
     };
 
-    const handleViewDetailCalendar = () => {
-        // navigation.navigate('DetailCalendar');
-    };
-
     return (
         <View style={styles.calendarItem}>
             <Text style={styles.timeDeparture}>
@@ -108,7 +104,11 @@ export const CalendarRegisted = (props) => {
                 <View style={styles.action}>
                     <TouchableOpacity
                         style={styles.buttonDetail}
-                        onPress={handleViewDetailCalendar}
+                        onPress={() => {
+                            navigation.navigate('DetailCalendar', {
+                                calendar: calendar,
+                            });
+                        }}
                     >
                         <Text style={styles.labelButton}>CHI TIẾT</Text>
                     </TouchableOpacity>

@@ -24,3 +24,6 @@ export const getGuideTimesByAccount = (data) =>
 
 export const getRatingGuideByGuideAccount = (data) =>
     axios.post(`${URL}/RatingGuide/getRatingGuideByGuideAccount`, data);
+
+export const getTouristByDeparture = (data) =>
+    axios.post(`${URL}/BookingTour/getTouristByDeparture`, data);

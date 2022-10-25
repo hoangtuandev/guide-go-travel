@@ -166,12 +166,12 @@ export const CalendarItem = (props) => {
                     ))}
                 </View>
                 <View style={styles.action}>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={styles.buttonDetail}
                         onPress={handleViewDetailCalendar}
                     >
                         <Text style={styles.labelButton}>CHI TIẾT</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     {!isRegisted && !isLoading && (
                         <TouchableOpacity
                             style={styles.buttonRegister}

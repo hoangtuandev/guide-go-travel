@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,8 +7,24 @@ import {
     TouchableOpacity,
     Image,
 } from 'react-native';
+import moment from 'moment';
+import * as api from '../api';
 
-export const DetailCalendar = ({ navigation }) => {
+export const DetailCalendar = ({ route, navigation }) => {
+    const { calendar } = route.params;
+
+    const [amountTourist, setAmountTourist] = useState(0);
+    const [touristList, setTouristList] = useState([]);
+
+    useEffect(() => {
+        api.getTouristByDeparture({
+            calendar: calendar.ldt_lichkhoihanh,
+        }).then((res) => {
+            setAmountTourist(res.data.amountTourist);
+            setTouristList(res.data.filterByCalendar);
+        });
+    }, []);
+
     const handleBackHome = () => {
         navigation.navigate('Home');
     };
@@ -42,86 +58,112 @@ export const DetailCalendar = ({ navigation }) => {
                         </View>
                         <View>
                             <Text style={styles.tourName}>
-                                Tour Ha Noi - Nha Trang - Da Nang - Hoi An - Ha
-                                Noi
+                                {calendar.ldt_tour.t_ten}
                             </Text>
                         </View>
                     </View>
                     <Text style={styles.text}>
-                        Khoi hanh: Thu 5, ngay 22/10/2022
+                        Khởi hành:{' '}
+                        {moment(
+                            calendar.ldt_lichkhoihanh.lkh_ngaykhoihanh
+                        ).format('DD/MM/YYYY')}
                     </Text>
-                    <Text style={styles.text}>Kết thúc: 25/10/2022</Text>
-                    <Text style={styles.text}>Khoi hanh tai:</Text>
-                    <Text style={styles.text}>Loai hinh: Tour kham pha</Text>
-                    <Text style={styles.text}>Số ngày: 3 ngay</Text>
+                    <Text style={styles.text}>
+                        Kết thúc:{' '}
+                        {moment(
+                            calendar.ldt_lichkhoihanh.lkh_ngayketthuc
+                        ).format('DD/MM/YYYY')}
+                    </Text>
+                    <Text style={styles.text}>
+                        Điểm khởi hành: {calendar.ldt_lichkhoihanh.lkh_diadiem}
+                    </Text>
+                    <Text style={styles.text}>
+                        Loại hình: {calendar.ldt_tour.t_loaihinh.lht_ten}
+                    </Text>
+                    <Text style={styles.text}>
+                        Số ngày: {calendar.ldt_tour.t_thoigian} ngày{' '}
+                        {calendar.ldt_tour.t_thoigian - 1} đêm
+                    </Text>
+                    <Text style={styles.text}>
+                        Tổng lượng khách: {amountTourist}
+                    </Text>
                 </View>
-
+                <View style={styles.imageList}>
+                    {calendar.ldt_tour.t_hinhanh.map((img, index) => (
+                        <Image
+                            key={index}
+                            style={styles.imageTour}
+                            source={{
+                                uri: img,
+                            }}
+                        />
+                    ))}
+                </View>
                 <View style={styles.inforGuide}>
                     <Text style={styles.labelBox}>
                         HƯỚNG DẪN VIÊN ĐÃ ĐĂNG KÝ
                     </Text>
-                    <View style={styles.guideItem}>
-                        <Image
-                            style={styles.guideAvatar}
-                            source={{
-                                uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1665150844/Avatar/Thoat-kiep-ta-1656037029-25-width660height660_rj4jy5_mkmuzw.jpg',
-                            }}
-                        />
-                        <View style={styles.guideDetail}>
-                            <Text style={styles.nameGuide}>
-                                Pham Hoang Tuan
-                            </Text>
-                            <View style={styles.detailItem}>
-                                <Image
-                                    style={styles.iconDetail}
-                                    source={require('../images/phone_icon_136322.png')}
-                                />
-                                <Text style={styles.textDetail}>
-                                    0645876845
+                    {calendar.ldt_huongdanvien.map((guide, index) => (
+                        <View key={index} style={styles.guideItem}>
+                            <Image
+                                style={styles.guideAvatar}
+                                source={{
+                                    uri: guide.tkhdv_anhdaidien,
+                                }}
+                            />
+                            <View style={styles.guideDetail}>
+                                <Text style={styles.nameGuide}>
+                                    {guide.tkhdv_huongdanvien.hdv_hoten}
                                 </Text>
-                            </View>
-                            <View style={styles.detailItem}>
-                                <Image
-                                    style={styles.iconDetail}
-                                    source={require('../images/Mail_icon-icons.com_71849.png')}
-                                />
-                                <Text style={styles.textDetail}>
-                                    phamhoangtuan@gmail.com
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.guideItem}>
-                        <Image
-                            style={styles.guideAvatar}
-                            source={{
-                                uri: 'https://res.cloudinary.com/phtuandev/image/upload/v1665150844/Avatar/Thoat-kiep-ta-1656037029-25-width660height660_rj4jy5_mkmuzw.jpg',
-                            }}
-                        />
-                        <View style={styles.guideDetail}>
-                            <Text style={styles.nameGuide}>
-                                Pham Hoang Tuan
-                            </Text>
-                            <View style={styles.detailItem}>
-                                <Image
-                                    style={styles.iconDetail}
-                                    source={require('../images/phone_icon_136322.png')}
-                                />
-                                <Text style={styles.textDetail}>
-                                    0645876845
-                                </Text>
-                            </View>
-                            <View style={styles.detailItem}>
-                                <Image
-                                    style={styles.iconDetail}
-                                    source={require('../images/Mail_icon-icons.com_71849.png')}
-                                />
-                                <Text style={styles.textDetail}>
-                                    phamhoangtuan@gmail.com
-                                </Text>
+                                <View style={styles.detailItem}>
+                                    <Image
+                                        style={styles.iconDetail}
+                                        source={require('../images/phone_icon_136322.png')}
+                                    />
+                                    <Text style={styles.textDetail}>
+                                        {
+                                            guide.tkhdv_huongdanvien
+                                                .hdv_sodienthoai
+                                        }
+                                    </Text>
+                                </View>
+                                <View style={styles.detailItem}>
+                                    <Image
+                                        style={styles.iconDetail}
+                                        source={require('../images/Mail_icon-icons.com_71849.png')}
+                                    />
+                                    <Text style={styles.textDetail}>
+                                        {guide.tkhdv_huongdanvien.hdv_mail}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
+                    ))}
+                </View>
+                <View style={styles.inforGuide}>
+                    <Text style={styles.labelBox}>KHÁCH DU LỊCH</Text>
+                    {touristList.length !== 0 &&
+                        touristList.map((tourist, index) => (
+                            <View key={index} style={styles.touristItem}>
+                                <Text style={styles.textDetail}>
+                                    {index + 1}
+                                    {'.'}
+                                </Text>
+                                <Text style={styles.nameTourist}>
+                                    {tourist.bt_thongtinlienhe.firstname}{' '}
+                                    {tourist.bt_thongtinlienhe.lastname}
+                                </Text>
+                                <View style={styles.detailItem}>
+                                    <Image
+                                        style={styles.iconDetail}
+                                        source={require('../images/phone_icon_136322.png')}
+                                    />
+                                    <Text style={styles.textDetail}>
+                                        {tourist.bt_thongtinlienhe.phone}
+                                    </Text>
+                                </View>
+                            </View>
+                        ))}
                 </View>
                 <Text style={styles.labelBox}>LỊCH TRÌNH TOUR</Text>
                 <View
@@ -129,66 +171,21 @@ export const DetailCalendar = ({ navigation }) => {
                     // showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                 >
-                    <View style={styles.scheduleItem}>
-                        <Text style={styles.labelSchedule}>
-                            Ngay 1: Tham quan Nam Đảo Cáp treo Hòn Thơm
-                        </Text>
-                        <View style={styles.contentSchedule}>
-                            <Text style={styles.labelDescribe}>
-                                Phương tiện:
-                            </Text>
-                            <Text style={styles.describe}>Máy bay</Text>
-                        </View>
-                        <View style={styles.contentSchedule}>
-                            <Text style={styles.labelDescribe}>Nội dung: </Text>
-                            <Text style={styles.describe}>
-                                Cơ sở sản xuất rượu Sim rừng. Cơ sở nuôi cấy
-                                ngọc trai. Di tích lịch sử Nhà tù Phú Quốc. Nhà
-                                thùng sản xuất nước mắm. Bãi Sao, tự do nghỉ
-                                ngơi, tắm biển.
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={styles.scheduleItem}>
-                        <Text style={styles.labelSchedule}>
-                            Ngay 1: Tham quan Nam Đảo Cáp treo Hòn Thơm
-                        </Text>
-                        <View style={styles.contentSchedule}>
-                            <Text style={styles.labelDescribe}>
-                                Phương tiện:
-                            </Text>
-                            <Text style={styles.describe}>Máy bay</Text>
-                        </View>
-                        <View style={styles.contentSchedule}>
-                            <Text style={styles.labelDescribe}>Nội dung: </Text>
-                            <Text style={styles.describe}>
-                                Cơ sở sản xuất rượu Sim rừng. Cơ sở nuôi cấy
-                                ngọc trai. Di tích lịch sử Nhà tù Phú Quốc. Nhà
-                                thùng sản xuất nước mắm. Bãi Sao, tự do nghỉ
-                                ngơi, tắm biển.
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={styles.scheduleItem}>
-                        <Text style={styles.labelSchedule}>
-                            Ngay 1: Tham quan Nam Đảo Cáp treo Hòn Thơm
-                        </Text>
-                        <View style={styles.contentSchedule}>
-                            <Text style={styles.labelDescribe}>
-                                Phương tiện:
-                            </Text>
-                            <Text style={styles.describe}>Máy bay</Text>
-                        </View>
-                        <View style={styles.contentSchedule}>
-                            <Text style={styles.labelDescribe}>Nội dung: </Text>
-                            <Text style={styles.describe}>
-                                Cơ sở sản xuất rượu Sim rừng. Cơ sở nuôi cấy
-                                ngọc trai. Di tích lịch sử Nhà tù Phú Quốc. Nhà
-                                thùng sản xuất nước mắm. Bãi Sao, tự do nghỉ
-                                ngơi, tắm biển.
-                            </Text>
-                        </View>
-                    </View>
+                    {calendar.ldt_tour.t_lichtrinhtour.map(
+                        (schedule, index) => (
+                            <View key={index} style={styles.scheduleItem}>
+                                <Text style={styles.labelSchedule}>
+                                    Ngày {schedule.ltt_ngay}: {schedule.ltt_ten}
+                                </Text>
+
+                                <View style={styles.contentSchedule}>
+                                    <Text style={styles.describe}>
+                                        {schedule.ltt_noidung}
+                                    </Text>
+                                </View>
+                            </View>
+                        )
+                    )}
                 </View>
             </ScrollView>
         </View>
@@ -218,7 +215,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '700',
         fontSize: 21,
-        color: '#2E86C1',
+        color: '#E74C3C',
     },
     content: {
         flex: 1,
@@ -234,7 +231,7 @@ const styles = StyleSheet.create({
         borderLeftWidth: 4,
         borderColor: '#E74C3C',
         paddingLeft: 15,
-        marginTop: 10,
+        marginTop: 20,
         marginBottom: 10,
     },
     inforCalendar: {
@@ -253,8 +250,8 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     tourName: {
-        fontWeight: '700',
-        fontSize: 19,
+        fontWeight: '500',
+        fontSize: 20,
         color: '#2874A6',
         marginRight: 45,
     },
@@ -285,8 +282,26 @@ const styles = StyleSheet.create({
         width: 100,
     },
     describe: {
+        marginLeft: 0,
         fontSize: 18,
         textAlign: 'justify',
+        width: 370,
+    },
+    imageList: {
+        marginTop: 20,
+        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+
+        flexWrap: 'wrap',
+    },
+    imageTour: {
+        width: 117,
+        height: 80,
+        borderRadius: 3,
+        marginBottom: 10,
+        marginRight: 5,
+        marginLeft: 5,
     },
     inforGuide: {
         flex: 1,
@@ -307,6 +322,18 @@ const styles = StyleSheet.create({
         height: 55,
         borderRadius: 50,
         marginRight: 15,
+    },
+    touristItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    nameTourist: {
+        width: 230,
+        fontSize: 19,
+        fontWeight: '500',
+        color: '#2874A6',
+        marginLeft: 10,
     },
     detailItem: {
         flexDirection: 'row',
