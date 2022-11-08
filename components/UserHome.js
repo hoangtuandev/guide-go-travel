@@ -23,8 +23,6 @@ const iconRight = {
 export const UserHome = (props) => {
     const { userLogined, handleViewProfile } = props;
 
-    console.log(userLogined);
-
     const handleClickViewProfile = () => {
         handleViewProfile();
     };

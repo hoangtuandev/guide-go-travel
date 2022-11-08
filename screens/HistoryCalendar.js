@@ -26,7 +26,6 @@ export const HistoryCalendar = ({ navigation }) => {
                     username: userLogined.tkhdv_tendangnhap,
                 })
                 .then((res) => {
-                    console.log('GUIDE TIMES: ', res.data);
                     setHistoryCalendars(res.data);
                 });
     }, [userLogined]);

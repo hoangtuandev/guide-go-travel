@@ -28,8 +28,6 @@ export const Home = ({ navigation, route }) => {
         getUserLogin();
     }, []);
 
-    console.log('hfsdghsdb');
-
     useEffect(() => {
         if (userLogined) {
             api.getCalendarGuideByAccount({ idAccount: userLogined._id }).then(
@@ -67,23 +65,6 @@ export const Home = ({ navigation, route }) => {
 
         return result;
     };
-
-    // const dateStart = new Date(calendar.ldt_lichkhoihanh.lkh_ngaykhoihanh);
-    // const dateEnd = new Date(calendar.ldt_lichkhoihanh.lkh_ngayketthuc);
-    // const dayStart =
-    //     dateStart.getDay() === 0
-    //         ? 'Chủ nhật'
-    //         : dateStart.getDay() === 1
-    //         ? 'Thứ 2'
-    //         : dateStart.getDay() === 2
-    //         ? 'Thứ 3'
-    //         : dateStart.getDay() === 3
-    //         ? 'Thứ 4'
-    //         : dateStart.getDay() === 4
-    //         ? 'Thứ 5'
-    //         : dateStart.getDay() === 5
-    //         ? 'Thứ 6'
-    //         : 'Thứ 7';
 
     const handleCancelCalendarGuideTour = (calendar) => {
         api.cancelCalendarGuideTour({

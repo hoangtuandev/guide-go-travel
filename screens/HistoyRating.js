@@ -29,18 +29,6 @@ export const HistoryRating = ({ navigation }) => {
                 });
     }, [userLogined]);
 
-    // useEffect(() => {
-    //     userLogined &&
-    //         api
-    //             .getGuideTimesByAccount({
-    //                 username: userLogined.tkhdv_tendangnhap,
-    //             })
-    //             .then((res) => {
-    //                 console.log('GUIDE TIMES: ', res.data);
-    //                 setHistoryCalendars(res.data);
-    //             });
-    // }, [userLogined]);
-
     const handleBackHome = () => {
         navigation.navigate('Profile');
     };
